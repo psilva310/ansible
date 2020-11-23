@@ -1,0 +1,57 @@
+---
+- name: Download MySQL packages
+  get_url:
+    url: https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+    dest: /tmp/
+    checksum: md5:893b55d5d885df5c4d4cf7c4f2f6c153
+  become: yes
+
+- name: Install packages MySQL packages
+  yum:
+    name: /tmp/mysql80-community-release-el7-3.noarch.rpm
+    state: present
+  become: yes
+
+- name: Install MySQL server
+  yum:
+    name: 
+      - mysql-server
+      - MySQL-python
+    state: present
+  become: yes
+
+- name: Start mysqld service, if not already started
+  systemd:
+    name: mysqld
+    state: started
+  become: yes
+
+- name: Change mysql root password and keep track in 
+  shell: |
+    password_match=`awk '/A temporary password is generated for/ {a=$0} END{ print a }' /var/log/mysqld.log | awk '{print $(NF)}'`
+    echo $password_match
+    mysql -uroot -p$password_match --connect-expired-password -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '"{{ mysql_root_password }}"'; flush privileges;"
+  register: change_temp_pass
+  become: yes
+  notify:
+  - restart mysqld
+
+- meta: flush_handlers
+- debug:
+      var: change_temp_pass
+
+- name: Remove test database
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: test
+    state: absent
+  become: yes
+
+- name: Remove all anonymous user accounts
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: ''
+    host_all: yes
+    state: absent

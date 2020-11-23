@@ -1,0 +1,6 @@
+---
+  mysql_root_password: Password01#
+  mysql_zabbix_database_name: zabbix
+  mysql_zabbix_user: zabbix
+  mysql_zabbix_user_password: password
+  zabbix_server_ipaddress: localhost

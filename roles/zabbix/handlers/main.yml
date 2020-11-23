@@ -1,0 +1,21 @@
+---
+- name: restart zabbix-server
+  service: 
+    name: zabbix-server
+    state: restarted
+  become: yes
+- name: restart zabbix-agent
+  service: 
+    name: zabbix-agent
+    state: restarted
+  become: yes
+- name: restart httpd
+  service: 
+    name: httpd
+    state: restarted
+  become: yes
+- name: restart rh-php72-php-fpm
+  service: 
+    name: rh-php72-php-fpm
+    state: restarted
+  become: yes
