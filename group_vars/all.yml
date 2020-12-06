@@ -3,7 +3,7 @@
   mysql_zabbix_database_name: zabbix
   mysql_zabbix_user: zabbix
   mysql_zabbix_user_password: Password01#
-  mysql_server_ipaddreses: 192.168.1.21
-  zabbix_server_ipaddress: 192.168.1.22
+  mysql_server_ipaddress: 192.168.1.21
+  zabbix_server_ipaddress: 192.168.1.21
   php_datetimezone: America/Sao_Paulo
 

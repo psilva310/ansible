@@ -1,7 +1,8 @@
 ---
-  mysql_zabbix_user: zabbix
-  mysql_zabbix_user_password: password
-  mysql_server_ipaddreses: localhost 
-  zabbix_server_ipaddress: localhost
+  mysql_root_password: Password01#
   mysql_zabbix_database_name: zabbix
+  mysql_zabbix_user: zabbix
+  mysql_zabbix_user_password: Password01#
+  zabbix_server_ipaddress: localhost
+  mysql_server_ipaddreses: localhost
   php_datetimezone: America/Sao_Paulo

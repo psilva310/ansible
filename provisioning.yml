@@ -1,20 +1,37 @@
 ---
-#Don't forget to run "ansible-galaxy collection install ansible.posix"
+#Don't forget to run "ansible-galaxy collection install ansible.posix" 
 #Set the variables mysql_server_ipaddreses and zabbix_server_ipaddress in group_vars to localhost to install both the zabbix server and database on the same server
 #Create your host file accordingly
-- hosts: all
+- hosts: all  
   tasks:
     - name: Upgrade all packages
       yum:
         name: '*'
         state: latest
       become: yes
+      tags:
+      - always
 
-- hosts: database
-  roles: 
-    - zabbixdatabase
-    - zabbix
+###Install database in host1
+- hosts: host1
+  tasks:
+    - name: Import mysql8 role with database tag
+      import_role:
+        name: mysql8
+      tags:
+        - database
 
-- hosts: zabbix
-  roles: 
-    - zabbix
+    - name: Add database tag to tasks in zabbix_database.yml 
+      include_tasks:
+        file: roles/zabbix/tasks/zabbix_database.yml
+        apply:
+          tags: database
+      tags: database
+
+###Install zabbix in host2
+- hosts: host2
+  tasks:
+    - name: Add zabbix tag to tasks in zabbix_server.yml 
+      include_role:
+        name: zabbix
+      tags: zabbix

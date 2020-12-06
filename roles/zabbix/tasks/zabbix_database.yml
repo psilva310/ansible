@@ -1,4 +1,12 @@
 ---
+- name: Start mysqld service, if not already started
+  systemd:
+    name: mysqld
+    state: restarted
+  become: yes
+  tags:
+    - database
+
 - name: Create MySQL database for Zabbix
   mysql_db:
     login_user: root
@@ -7,6 +15,8 @@
     encoding: utf8
     collation: utf8_bin
     state: present
+  tags:
+    - database
 
 - name: 'Create user for Zabbix database in MySQL'
   mysql_user:
@@ -19,3 +29,5 @@
     host: '{{ item }}'
   with_items:
     - "{{ zabbix_server_ipaddress }}"
+  tags:
+    - database
