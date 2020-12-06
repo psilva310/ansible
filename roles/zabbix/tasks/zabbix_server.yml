@@ -86,17 +86,11 @@
     state: yes
     persistent: yes
   become: yes
-  tags:
-    - zabbix
 
-#- name:  Load module zabbix_server.limits.pp
-#  shell: semodule -i -e zabbix_server.limits.pp && 
-#  become: yes
-#  tags:
-#    - zabbix
+- name:  Load module zabbix_server.limits.pp
+  shell: semodule -i zabbix_server.limits.pp 
+  become: yes
 
-#- name:  Load module zabbix_server.ports.pp
-#  shell: semodule -i -e zabbix_server.ports.pp
-#  become: yes
-#  tags:
-#    - zabbix
+- name:  Load module zabbix_server.ports.pp
+  shell: semodule -i zabbix_server.ports.pp
+  become: yes
