@@ -1,0 +1,4 @@
+---
+  cert_passphrasse: Password01#
+  cert_domain: example.com
+  common_name: www.example.com

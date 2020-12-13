@@ -1,0 +1,20 @@
+- firewalld:
+    port: 10050/tcp
+    permanent: yes
+    state: enabled
+  become: yes
+
+- name: firewall service
+  service:
+   name: firewalld
+   state: restarted
+   enabled: yes
+  become: yes
+
+- name:  semanage permissive -a zabbix_agent_t
+  shell: semanage permissive -a zabbix_agent_t
+  become: yes
+
+- name: Allow SELinux for zabbix agent
+  shell: grep "zabbix_agent" /var/log/audit/audit.log  |  audit2allow -M zabbix_agent && sudo semodule -i zabbix_agent.pp
+  become: yes

@@ -1,0 +1,3 @@
+---
+  wildfly_admin_user: administrator
+  wildfly_admin_password: Password01

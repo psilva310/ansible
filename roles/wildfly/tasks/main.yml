@@ -1,0 +1,5 @@
+---
+- include: prerequisites.yml
+- include: install_wildfly16.yml
+- include: wildfly_credentials.yml
+  

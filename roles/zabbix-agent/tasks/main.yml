@@ -1,0 +1,12 @@
+---
+- include: prerequisites.yml
+  tags: basic_config
+
+- include: installation_centos.yml
+  tags: basic_config
+
+- include: firewalld.yml
+  tags: firewalld
+
+- include: iptables.yml
+  tags: iptables

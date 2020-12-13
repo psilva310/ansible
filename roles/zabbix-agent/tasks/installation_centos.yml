@@ -1,0 +1,41 @@
+- name: Install zabbix agent | centos
+  yum:
+    name: zabbix-agent
+    state: present
+  become: yes
+
+- name: Configure zabbix.conf file
+  template:
+    src: zabbix_agentd.conf
+    dest: /etc/zabbix/zabbix_agentd.conf
+  become: yes
+
+- name: Configure zabbix-agent.service
+  copy:
+    src: zabbix-agent.service
+    dest: /usr/lib/systemd/system/zabbix-agent.service
+  become: yes
+
+- name: Copy perl script
+  copy:
+    src: lld.pl
+    dest: /usr/local/bin/lld.pl
+    owner: zabbix
+    group: zabbix
+    mode: '775'
+  become: yes
+
+- name: Perl interpreter
+  shell: perl -i -pe 'y|\r||d' /usr/local/bin/lld.pl
+  become: yes
+
+- name: daemon_reload
+  shell: systemctl daemon-reload
+  become: yes
+
+- name: Enable zabbix-agent service
+  service:
+    name: zabbix-agent
+    state: restarted
+    enabled: yes
+  become: yes

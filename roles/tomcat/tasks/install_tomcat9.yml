@@ -1,0 +1,78 @@
+- name: Download packages
+  get_url:
+    url: https://downloads.apache.org/tomcat/tomcat-9/v9.0.41/bin/apache-tomcat-9.0.41.tar.gz
+    checksum: sha512:b6450e590a37c5bccf049b1176c441f0964796995e80d4c7c7d9fb74f9ad817107c303b6b83ed3d71c9251b2b8acf334b90a4abdf9deea122e338643cece0766
+    dest: /tmp/
+  become: yes
+
+- name: Create the tomcat user
+  user:
+    name: tomcat
+    state: present
+    shell: /bin/false
+    create_home: no
+  become: yes
+
+- name: Unarchive a file to /opt
+  unarchive:
+    src: /tmp/apache-tomcat-9.0.41.tar.gz
+    dest: /opt/
+    owner: tomcat
+    group: tomcat
+    mode: '755'
+    remote_src: yes
+  become: yes
+
+- name: Copy context.xml 1
+  copy:
+    src: context.xml
+    dest: /opt/apache-tomcat-9.0.41/webapps/manager/META-INF/
+  become: yes
+
+- name: Copy context.xml 2
+  copy:
+    src: context.xml
+    dest: /opt/apache-tomcat-9.0.41/webapps/host-manager/META-INF/
+  become: yes
+
+- name: Copy server.xml
+  template:
+    src: server.xml
+    dest: /opt/apache-tomcat-9.0.41/conf/
+  become: yes
+
+- name: Copy tomcat-user.xml
+  template:
+    src: tomcat-users.xml
+    dest: /opt/apache-tomcat-9.0.41/conf/
+  become: yes
+
+- name: daemon_reload
+  shell: systemctl daemon-reload
+  become: yes
+
+- name: Copy service file
+  copy:
+    src: tomcat.service
+    dest: /etc/systemd/system/
+  become: yes
+
+- name: Enable tomcat service
+  service:
+    name: tomcat
+    state: restarted
+    enabled: yes
+  become: yes
+
+- firewalld:
+    port: 8081/tcp
+    permanent: yes
+    state: enabled
+  become: yes
+
+- name: firewall service
+  service:
+   name: firewalld
+   state: restarted
+   enabled: yes
+  become: yes

@@ -1,0 +1,10 @@
+- name: Insert a rule on line 1
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    source: 10.2.1.2/25
+    destination_port: 10050
+    jump: ACCEPT
+    action: insert
+    rule_num: 1
+  become: yes

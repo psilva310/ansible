@@ -1,0 +1,81 @@
+- name: Download packages
+  get_url:
+    url: https://download.jboss.org/wildfly/16.0.0.Final/wildfly-16.0.0.Final.tar.gz
+    checksum: sha1:287c21b069ec6ecd80472afec01384093ed8eb7d
+    dest: /tmp/
+  become: yes
+
+- name: Create the user wildfly
+  user:
+    name: wildfly
+    state: present
+    shell: /bin/false
+    create_home: no
+  become: yes
+
+- name: Unarchive a file to /opt
+  unarchive:
+    src: /tmp/wildfly-16.0.0.Final.tar.gz
+    dest: /opt/
+    owner: wildfly
+    group: wildfly
+    mode: '755'
+    remote_src: yes
+  become: yes
+
+- name: Copy configuration file
+  copy:
+    src: wildfly.conf
+    dest: /etc/wildfly/
+  become: yes
+
+- name: Copy launch file
+  copy:
+    src: launch.sh
+    dest: /opt/wildfly-16.0.0.Final/bin/
+    owner: wildfly
+    group: wildfly
+    mode: '775'
+  become: yes
+
+- name: Copy standalone.xml
+  copy:
+    src: standalone.xml
+    dest: /opt/wildfly-16.0.0.Final/standalone/configuration/
+  become: yes
+
+- name: Copy service file
+  copy:
+    src: wildfly.service
+    dest: /etc/systemd/system/wildfly.service
+  become: yes
+
+- name: daemon_reload
+  shell: systemctl daemon-reload
+  become: yes
+
+- name: restart/enable wildFly service
+  service:
+    name: wildfly.service
+    state: restarted
+    enabled: yes
+  become: yes
+
+- firewalld:
+    port: 8443/tcp
+    permanent: yes
+    state: enabled
+  become: yes
+
+- firewalld:
+    port: 9990/tcp
+    permanent: yes
+    state: enabled
+  become: yes
+
+- name: restart firewall service
+  service:
+    name: firewalld
+    state: restarted
+    enabled: yes
+  become: yes

@@ -88,9 +88,9 @@
   become: yes
 
 - name:  Load module zabbix_server.limits.pp
-  shell: semodule -i zabbix_server.limits.pp 
+  shell: cat /var/log/audit/audit.log | grep zabbix_server | grep denied | audit2allow -M zabbix_server.limits && sudo semodule -i zabbix_server.limits.pp 
   become: yes
 
 - name:  Load module zabbix_server.ports.pp
-  shell: semodule -i zabbix_server.ports.pp
+  shell: cat /var/log/audit/audit.log | grep zabbix_server | grep denied | audit2allow -M zabbix_server.ports && semodule -i zabbix_server.ports.pp
   become: yes
