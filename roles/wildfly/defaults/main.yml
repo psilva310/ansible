@@ -1,3 +1,5 @@
 ---
   wildfly_admin_user: administrator
   wildfly_admin_password: Password01
+  graylog_server_ip: 192.168.1.22
+  graylog_gelf_port: 12201

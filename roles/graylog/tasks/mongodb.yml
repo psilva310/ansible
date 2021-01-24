@@ -1,0 +1,27 @@
+- name: MongoDB repository
+  yum_repository:
+    name: mongodb-org-4.2
+    description: MongoDB repository
+    baseurl: https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/x86_64/
+    state: present
+    gpgkey: https://www.mongodb.org/static/pgp/server-4.2.asc
+    gpgcheck: yes
+    enabled: yes
+  become: yes
+
+- name: Install latest MongoDB
+  yum:
+    name: mongodb-org
+    update_cache: yes
+  become: yes
+
+- name: daemon_reload
+  shell: systemctl daemon-reload
+  become: yes
+
+- name: restart/enable mongod service
+  service:
+    name: mongod.service
+    state: restarted
+    enabled: yes
+  become: yes

@@ -1,3 +1,4 @@
 ---
   rundeck_add_username: rundeck
   rundeck_auth_public_key: publickey
+  hashedpassword: yourhashedpasswod

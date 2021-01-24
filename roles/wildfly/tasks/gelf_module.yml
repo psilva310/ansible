@@ -1,0 +1,38 @@
+- name: unzip GELF module
+  unarchive:
+    src: logstash-gelf-1.14.1-logging-module.zip
+    dest: /opt/wildfly-16.0.0.Final/modules/system/layers/base
+    owner: wildfly
+    group: wildfly
+    mode: '775'
+  become: yes
+
+- name: adjust module structure
+  shell: mv /opt/wildfly-16.0.0.Final/modules/system/layers/base/logstash-gelf-1.14.1/biz /opt/wildfly-16.0.0.Final/modules/system/layers/base/ && rmdir /opt/wildfly-16.0.0.Final/modules/system/layers/base/logstash-gelf-1.14.1 || echo "could not move"
+  register: adjust_result
+  become: yes
+
+- meta: flush_handlers
+- debug:
+      var: adjust_result
+
+#- name: Copy standalone.xml
+#  template:
+#    src: standalone-gelf.xml
+#    dest: /opt/wildfly-16.0.0.Final/standalone/configuration/standalone.xml
+#  become: yes
+
+- name:
+  shell: sh /opt/wildfly-16.0.0.Final/bin/jboss-cli.sh --connect '/subsystem=logging/custom-handler=GelfLogger/:add(module=biz.paluch.logging,class=biz.paluch.logging.gelf.wildfly.WildFlyGelfLogHandler,properties={ host="udp:{{graylog_server_ip}}", port="{{graylog_gelf_port}}", version="1.0", facility="logstash-gelf", extractStackTrace=true, filterStackTrace=true, includeLogMessageParameters=true, mdcProfiling=true, timestampPattern="yyyy-MM-dd HH:mm:ss,SSS", maximumMessageSize=8192, additionalFields="fieldName1=fieldValue1,fieldName2=fieldValue2", additionalFieldTypes="fieldName1=String,fieldName2=Double,fieldName3=Long", mdcFields="mdcField1, mdcField2" dynamicMdcFields="mdc.*, (mdc|MDC)fields" dynamicMdcFieldTypes="my_field.*=String,business\..*\.field=double" includeFullMdc=true })'
+  become: yes
+
+- name:
+  shell: /opt/wildfly-16.0.0.Final/bin/jboss-cli.sh --connect '/subsystem=logging/root-logger=ROOT/:write-attribute(name=handlers,value=["FILE","CONSOLE","GelfLogger"])'
+  become: yes
+
+- name: restart/enable wildFly service
+  service:
+    name: wildfly.service
+    state: restarted
+    enabled: yes
+  become: yes

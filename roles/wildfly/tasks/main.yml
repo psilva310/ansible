@@ -1,6 +1,15 @@
 ---
 - include: prerequisites.yml
+  tags: basic_config
+
 - include: install_wildfly16.yml
+  tags: basic_config
+
 - include: wildfly_credentials.yml
-- include: oracle_module.yml
-  tags: oracle_module
+  tags: basic_config
+
+- include: clickapp_requirements.yml
+  tags: oracle
+
+- include: gelf_module.yml
+  tags: gelf

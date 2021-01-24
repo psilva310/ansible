@@ -44,4 +44,4 @@
 
 - hosts: host1
   roles:
-    - zabbix-agent
+    - wildfly

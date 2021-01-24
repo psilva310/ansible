@@ -1,0 +1,46 @@
+---
+- name: Install graylog repository
+  yum:
+    name: https://packages.graylog2.org/repo/packages/graylog-4.0-repository_latest.rpm
+    state: present
+    update_cache: yes
+    validate_certs: yes
+  become: yes
+
+- name: Install graylog server
+  yum:
+    name: graylog-server
+  become: yes
+
+- name: pwgen for graylog
+  shell: pwgen -N 1 -s 96
+  register: pwgen
+  become: yes
+
+- set_fact:
+    pwgen={{pwgen.stdout}}
+
+- name: Hash admin password
+  shell: echo -n {{admin_password}} | sha256sum | cut -d" " -f1
+  register: hashed_admin_password
+  become: yes
+
+- set_fact:
+    hashed_admin_password={{hashed_admin_password.stdout}}
+
+- name: copy server.conf template
+  template:
+    src: 'server.conf'
+    dest: /etc/graylog/server/server.conf
+  become: yes
+
+- name: daemon_reload
+  shell: systemctl daemon-reload
+  become: yes
+
+- name: restart/enable graylog service
+  service:
+    name: graylog-server.service
+    state: restarted
+    enabled: yes
+  become: yes

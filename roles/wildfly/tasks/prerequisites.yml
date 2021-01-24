@@ -1,5 +1,7 @@
-- name: Install Java openjdk
+- name: Install prerequisites (java, unzip)
   yum:
-    name: java-11-openjdk.x86_64
+    name:
+      - java-11-openjdk.x86_64
+      - unzip
     state: present
   become: yes

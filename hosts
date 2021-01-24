@@ -2,3 +2,5 @@
 192.168.1.21 ansible_ssh_private_key_file=/root/.ssh/ansible ansible_user=vagrant
 [host2]
 192.168.1.22 ansible_ssh_private_key_file=/root/.ssh/ansible ansible_user=vagrant
+[host3]
+192.168.1.23 ansible_ssh_private_key_file=/root/.ssh/ansible ansible_user=vagrant

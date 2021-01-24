@@ -1,0 +1,18 @@
+- name: unzip oracle module
+  unarchive:
+    src: oracle.zip
+    dest: /opt/wildfly-16.0.0.Final/modules/system/layers/base/com/
+    owner: wildfly
+    group: wildfly
+    mode: '775'
+  become: yes
+
+- name: Create log directory for Click application logs
+  file:
+    path: /var/log/click/ck410/
+    state: directory
+    recurse: yes
+    owner: wildfly
+    group: wildfly
+    mode: '755'
+  become: yes

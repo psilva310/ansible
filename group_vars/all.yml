@@ -7,3 +7,7 @@
   zabbix_server_ipaddress: localhost
   php_datetimezone: America/Sao_Paulo
   agent_config_zabbix_server_ip_address: 192.168.1.22
+
+  #wildfly role
+  wildfly_admin_user: administrator
+  wildfly_admin_password: Password01#
