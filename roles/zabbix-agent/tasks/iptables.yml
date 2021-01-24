@@ -2,7 +2,7 @@
   iptables:
     chain: INPUT
     protocol: tcp
-    source: 10.2.1.2/25
+    source: 10.2.1.2/32
     destination_port: 10050
     jump: ACCEPT
     action: insert

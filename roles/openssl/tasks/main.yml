@@ -1,0 +1,4 @@
+---
+  - include: prerequisites.yml
+  - include: generate_private_key.yml
+  - include: generate_csr.yml

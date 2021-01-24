@@ -1,0 +1,25 @@
+- name: Create user in server
+  user:
+    name: "{{add_username}}"
+    state: present
+    shell: /bin/bash
+    append: yes
+    groups: ''
+    home: /home/{{add_username}}
+  become: yes
+
+- name: Set authorized keys taken from variable
+  authorized_key:
+    user: "{{add_username}}"
+    state: present
+    key: "{{auth_public_key}}"
+  become: yes
+
+- name: Add
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    line: '{{add_username}} ALL=(root) NOPASSWD: {{permissions}}'
+    insertafter: EOF
+    validate: 'visudo -cf %s'
+  become: yes

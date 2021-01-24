@@ -65,7 +65,7 @@
   become: yes
 
 - firewalld:
-    port: 8081/tcp
+    port: "{{tomcat_port}}/tcp"
     permanent: yes
     state: enabled
   become: yes

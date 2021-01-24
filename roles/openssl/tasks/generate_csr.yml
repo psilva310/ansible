@@ -2,8 +2,8 @@
   openssl_csr:
     path: /etc/ssl/certs/{{cert_domain}}.csr
     privatekey_path: /etc/ssl/private/{{cert_domain}}.pem
-    privatekey_passphrase: {{cert_passphrasse}}
-    common_name: {{common_name}}
+    privatekey_passphrase: "{{cert_passphrasse}}"
+    common_name: "{{common_name}}"
     country_name: BR
     email_address: admin@{{cert_domain}}
     locality_name: Sao_Paulo

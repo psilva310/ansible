@@ -44,6 +44,16 @@
     dest: /opt/wildfly-16.0.0.Final/standalone/configuration/
   become: yes
 
+- name: Create log directory for click logs
+  file:
+    path: /var/log/click/ck410/
+    state: directory
+    recurse: yes
+    owner: wildfly
+    group: wildfly
+    mode: '755'
+  become: yes
+
 - name: Copy service file
   copy:
     src: wildfly.service

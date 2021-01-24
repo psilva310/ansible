@@ -1,7 +1,7 @@
 - name: Generate an OpenSSL private key with passphrase (4096 bits, RSA)
   openssl_privatekey:
     path: /etc/ssl/private/{{cert_domain}}.pem
-    passphrase: {{cert_passphrasse}}
+    passphrase: "{{cert_passphrasse}}"
     cipher: aes256
     owner: root
     group: root

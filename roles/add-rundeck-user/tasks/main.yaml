@@ -1,0 +1,26 @@
+- name: Create user in server
+  user:
+    name: "{{rundeck_add_username}}"
+    state: present
+    shell: /bin/bash
+    password: {{hashedpassword}}
+    append: yes
+    groups: ''
+    home: /home/{{rundeck_add_username}}
+  become: yes
+
+- name: Set authorized keys taken from variable
+  authorized_key:
+    user: "{{rundeck_add_username}}"
+    state: present
+    key: "{{rundeck_auth_public_key}}"
+  become: yes
+
+- name: Add
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    line: '{{rundeck_add_username}} ALL=(root) ALL'
+    insertafter: EOF
+    validate: 'visudo -cf %s'
+  become: yes

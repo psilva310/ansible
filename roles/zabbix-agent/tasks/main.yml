@@ -10,3 +10,6 @@
 
 - include: iptables.yml
   tags: iptables
+
+- include: selinux.yml
+  tags: selinux

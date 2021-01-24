@@ -2,4 +2,5 @@
 - include: prerequisites.yml
 - include: install_wildfly16.yml
 - include: wildfly_credentials.yml
-  
+- include: oracle_module.yml
+  tags: oracle_module
