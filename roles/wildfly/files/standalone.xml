@@ -473,6 +473,7 @@
                 <host name="default-host" alias="localhost">
                     <location name="/" handler="welcome-content"/>
                     <http-invoker security-realm="ApplicationRealm"/>
+                    <access-log use-server-log="true"/>
                 </host>
             </server>
             <servlet-container name="default">
