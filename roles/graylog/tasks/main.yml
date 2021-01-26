@@ -3,3 +3,4 @@
 - include: mongodb.yml
 - include: elasticsearch.yml
 - include: graylog.yml
+- include: selinux.yml
