@@ -1,0 +1,5 @@
+- firewalld:
+    port: 9000/tcp
+    permanent: yes
+    state: enabled
+  become: yes
